@@ -1,3 +1,13 @@
+PlayerName: "Hero"
 Health: 10000
 Damage: 2600
 Speed: 7.5
+Mana: 500
+IsAlive: true
+CriticalChance: 0.15
+Defense: 85
+Stamina: 120.5
+IsStunned: false
+Gold: 45000
+InventorySlots: 20
+RespawnTime: 5.0
