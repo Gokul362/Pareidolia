@@ -32,6 +32,9 @@ void BinaryConvert() {
 	if (Value == "true" || Value == "false") {
 		DataTypes ValueType = DataTypes::Bool;
 		outFile.write(reinterpret_cast<char*>(&ValueType), 1);
+
+		auto ValueForWrite = Pair->second.as<bool>();
+		outFile.write(reinterpret_cast<char*>(&ValueForWrite), sizeof(ValueForWrite));
 	} 
 
 	else if (Value.find_first_not_of("-+0123456789.") == std::string::npos) {
@@ -39,12 +42,17 @@ void BinaryConvert() {
 		if (Value.find(".") != std::string::npos) {
 			DataTypes ValueType = DataTypes::Float;
 			outFile.write(reinterpret_cast<char*>(&ValueType), 1);
+
+			auto ValueForWrite = Pair->second.as<float>();
+			outFile.write(reinterpret_cast<char*>(&ValueForWrite), sizeof(ValueForWrite));
 		}
 
 		else {
-			std::cout << "This is a integer\n";
 			DataTypes ValueType = DataTypes::Int;
 			outFile.write(reinterpret_cast<char*>(&ValueType), 1);
+
+			auto ValueForWrite = Pair->second.as<int>();
+			outFile.write(reinterpret_cast<char*>(&ValueForWrite), sizeof(ValueForWrite));
 		}
 
 	}
@@ -52,7 +60,15 @@ void BinaryConvert() {
 	else {
 		DataTypes ValueType = DataTypes::String;
 		outFile.write(reinterpret_cast<char*>(&ValueType), 1);
+
+		auto ValueForWrite = Pair->second.as<std::string>();
+		outFile.write(reinterpret_cast<char*>(&ValueForWrite), sizeof(ValueForWrite));
 	}
+
+
+
+	
+
 
 	outFile.close();
 	std::cout << "\n\n--FILE WRITTEN--\n\n" << root;
