@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <typeinfo>
 #include "FileWatcher.h"
 #include "Serializer.h"
 
@@ -20,10 +21,39 @@ void BinaryConvert() {
 	auto KeyLength = Key.size();
 	auto ValueLength = Value.size();
 
+	// KeySize is how many bytes it takes up on RAM
 	uint32_t KeySize = static_cast<uint32_t>(KeyLength);
 
-	outFile.write(reinterpret_cast<char*>(&KeyLength), sizeof(KeySize));
+	outFile.write(reinterpret_cast<char*>(&KeyLength), sizeof(KeySize)); 
 	outFile.write(Key.c_str(), KeyLength);
+
+
+	// Where the data type of the value is found
+	if (Value == "true" || Value == "false") {
+		DataTypes ValueType = DataTypes::Bool;
+		outFile.write(reinterpret_cast<char*>(&ValueType), 1);
+	} 
+
+	else if (Value.find_first_not_of("-+0123456789.") == std::string::npos) {
+
+		if (Value.find(".") != std::string::npos) {
+			DataTypes ValueType = DataTypes::Float;
+			outFile.write(reinterpret_cast<char*>(&ValueType), 1);
+		}
+
+		else {
+			std::cout << "This is a integer\n";
+			DataTypes ValueType = DataTypes::Int;
+			outFile.write(reinterpret_cast<char*>(&ValueType), 1);
+		}
+
+	}
+
+	else {
+		DataTypes ValueType = DataTypes::String;
+		outFile.write(reinterpret_cast<char*>(&ValueType), 1);
+	}
+
 	outFile.close();
 	std::cout << "\n\n--FILE WRITTEN--\n\n" << root;
 }
