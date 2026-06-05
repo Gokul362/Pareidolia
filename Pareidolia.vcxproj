@@ -144,11 +144,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BinaryReader.cpp" />
     <ClCompile Include="Serializer.cpp" />
     <ClCompile Include="FileWatcher.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BinaryReader.h" />
     <ClInclude Include="FileWatcher.h" />
     <ClInclude Include="Serializer.h" />
   </ItemGroup>

@@ -11,7 +11,7 @@ void BinaryConvert() {
 	std::cout << "\n\n--GENERATING--\n\n";
 	std::fstream data("test.yaml", std::ios::in | std::ios::out);
 
-	std::ofstream outFile("Head.pxtan", std::ios::out | std::ios::binary | std::ios::trunc);
+	std::ofstream outFile("Head.bin", std::ios::out | std::ios::binary | std::ios::trunc);
 	char header[4] = { 'C', 'o', 's', '0' };
 	outFile.write(header, sizeof(header));
 
@@ -82,10 +82,8 @@ void BinaryConvert() {
 		// To go to the next YAML pair
 		++Pair;
 
-
 	}
 
-		
 	outFile.close();
 	std::cout << "\n\n--FILE WRITTEN--\n\n" << root;
 }
