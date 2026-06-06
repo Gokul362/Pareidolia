@@ -1,7 +1,5 @@
 #include <iostream>
 #include <filesystem>
-#include <chrono>
-#include <thread>
 #include <fstream>
 #include "Serializer.h"
 #include "FileWatcher.h"
@@ -25,7 +23,6 @@ bool ChangeDetected() {
 
     }
 
-    this_thread::sleep_for(chrono::milliseconds(200));
     return false;
   
 

@@ -15,7 +15,7 @@ void ReadBinary() {
 	std::memcpy(&TargetHeader, TargetHeaderBytes, 4);
 
 	char CurrentBytes[4];
-	pxtan.read(CurrentBytes, sizeof(CurrentBytes));
+	pxtan.read(CurrentBytes, 4);
 	auto CurrentHeader = 0;
 	std::memcpy(&CurrentHeader, CurrentBytes, 4);
 
@@ -44,7 +44,7 @@ void ReadBinary() {
 		std::vector<char> Key(VarKeyLength);
 		pxtan.read(Key.data(), Key.size());
 
-		char ValueDataType[4];
+		char ValueDataType[1];
 		pxtan.read(ValueDataType, sizeof(ValueDataType));
 		auto RawDataType = 0; // Raw just means it is directly from the binary, not converted into the enum
 		std::memcpy(&RawDataType, ValueDataType, 1);
@@ -61,7 +61,7 @@ void ReadBinary() {
 
 		if (VarDataType == DataTypes::Int) {
 			std::cout << "\n\nThe Value is an Integer";
-			bool isInt = true;
+			isInt = true;
 		} 
 		
 		else if (VarDataType == DataTypes::Float) {
@@ -85,7 +85,9 @@ void ReadBinary() {
 		auto VarValueLength = 0;
 		std::memcpy(&VarValueLength, ValueLength, 4);
 
+		// NOTE: Replace "Value" with "NewValue" from the "Pair" strcut
 
+		Pairs TempPair; // Struct for the "Key: Value"
 
 		if (isInt == true) {
 			VarValueLength = 4;
@@ -94,6 +96,7 @@ void ReadBinary() {
 
 			int Value;
 			std::memcpy(&Value, CharValue, VarValueLength);
+			TempPair = {Key, Value}; // Here, push back the TempKey and TempValue to a std::vector named PairsList
 		}
 
 		else if (isFloat == true) {
@@ -103,6 +106,7 @@ void ReadBinary() {
 			
 			float Value;
 			std::memcpy(&Value, CharValue, VarValueLength);
+			TempPair = { Key, Value };
 		}
 
 		else if (isBool == true) {
@@ -112,15 +116,18 @@ void ReadBinary() {
 
 			bool Value;
 			std::memcpy(&Value, CharValue, VarValueLength);
+			TempPair = {Key, Value};
 		}
 
 		else {
 
 			std::vector<char> Value(VarValueLength);
 			pxtan.read(Value.data(), VarValueLength);
+			TempPair = {Key, Value};
 
 		}
 
+		PairsList.push_back(TempPair); // PairsList holds all the Pairs, is defined in BinaryReader.h
 
 	}
 }
