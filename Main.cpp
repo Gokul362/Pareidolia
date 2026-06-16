@@ -1,20 +1,40 @@
+#include <unordered_map>
 #include "raylib.h"
+#include "Main.h"
 #include "FileWatcher.h"
 #include "Serializer.h"
 #include "BinaryReader.h"
-#include <iostream>
 
 int main() {
 
+	// Initial Boot 
+	BinaryConvert();
+	ReadBinary();
+
+	std::unordered_map<std::string, int> PairsMap;
+
+	for (int i = 0; i < PairsList.size(); i++) {
+
+		PairsMap[PairsList[i].NewKey] = i;
+
+	}
+
+	// Initial Variables
+	int index = PairsMap["X"];
+	Pairs& myInstance = PairsList[index];
+	int x = std::get<int>(myInstance.NewValue);
+
+	// Window Setup
 	InitWindow(950, 600, "Pareidolia++");
 	SetTargetFPS(60);
+
 
 	while (!WindowShouldClose()) {
 
 		BeginDrawing();
 
-			ClearBackground(WHITE);
-			DrawText("Everything is fine!", 20, 20, 20, DARKBLUE);
+			ClearBackground(BLACK);
+			DrawText("Pareidolia++", x, 20, 40, DARKBLUE);
 
 		EndDrawing();
 
@@ -22,9 +42,23 @@ int main() {
 		if (ChangeDetected() == true) {
 			BinaryConvert();
 			ReadBinary();
+
+			std::unordered_map<std::string, int> PairsMap;
+
+			for (int i = 0; i < PairsList.size(); i++) {
+
+				PairsMap[PairsList[i].NewKey] = i;
+
+			}
+
+			// Variables Again
+			index = PairsMap["X"];
+			Pairs& myInstance = PairsList[index];
+			x = std::get<int>(myInstance.NewValue);
+
+
 		}
 
-		
 
 
 	}

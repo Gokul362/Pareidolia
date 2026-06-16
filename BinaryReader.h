@@ -1,13 +1,15 @@
 #pragma once
+#include <iostream>
 #include <variant>
 #include <vector>
+#include <string>
 
 void ReadBinary();
 
 struct Pairs {
 
-	std::vector<char> NewKey;
-	std::variant<int, float, bool, std::vector<char>> NewValue;
+	std::string NewKey;
+	std::variant<int, float, bool, std::string> NewValue;
 
 };
 

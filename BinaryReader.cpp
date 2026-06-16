@@ -1,8 +1,9 @@
-#include <iostream>
 #include <fstream>
-#include <vector>
 #include "Serializer.h"
 #include "BinaryReader.h"
+#include <print>
+#include <ranges>
+#include <format>
 
 
 
@@ -41,8 +42,9 @@ void ReadBinary() {
 		std::memcpy(&VarKeyLength, KeyLength, 4);
 
 		// Makes a vector with the length variable, and reads that many bytes into it
-		std::vector<char> Key(VarKeyLength);
-		pxtan.read(Key.data(), Key.size());
+		std::vector<char> RawKey(VarKeyLength);
+		pxtan.read(RawKey.data(), RawKey.size());
+		std::string Key(RawKey.begin(), RawKey.end());
 
 		char ValueDataType[1];
 		pxtan.read(ValueDataType, sizeof(ValueDataType));
@@ -60,22 +62,22 @@ void ReadBinary() {
 
 
 		if (VarDataType == DataTypes::Int) {
-			std::cout << "\n\nThe Value is an Integer";
+			std::cout << "\n\nThe Value is an Integer  ";
 			isInt = true;
 		} 
 		
 		else if (VarDataType == DataTypes::Float) {
-			std::cout << "\n\nThe Value is a Float";
+			std::cout << "\n\nThe Value is a Float  ";
 			isFloat = true;
 		}
 
 		else if (VarDataType == DataTypes::Bool) {
-			std::cout << "\n\nThe Value is a Boolean";
+			std::cout << "\n\nThe Value is a Boolean  ";
 			isBool = true;
 		} 
 
 		else {
-			std::cout << "\n\nThe Value is a String";
+			std::cout << "\n\nThe Value is a String  ";
 			isString = true;
 		}
 
@@ -96,7 +98,8 @@ void ReadBinary() {
 
 			int Value;
 			std::memcpy(&Value, CharValue, VarValueLength);
-			TempPair = {Key, Value}; // Here, push back the TempKey and TempValue to a std::vector named PairsList
+			TempPair = {Key, Value}; 
+			std::println("{}: {}", Key, Value);
 		}
 
 		else if (isFloat == true) {
@@ -107,6 +110,7 @@ void ReadBinary() {
 			float Value;
 			std::memcpy(&Value, CharValue, VarValueLength);
 			TempPair = { Key, Value };
+			std::println("{}: {}", Key, Value);
 		}
 
 		else if (isBool == true) {
@@ -117,18 +121,24 @@ void ReadBinary() {
 			bool Value;
 			std::memcpy(&Value, CharValue, VarValueLength);
 			TempPair = {Key, Value};
+			std::println("{}: {}", Key, Value);
 		}
 
 		else {
 
-			std::vector<char> Value(VarValueLength);
-			pxtan.read(Value.data(), VarValueLength);
+			std::vector<char> RawValue(VarValueLength);
+			pxtan.read(RawValue.data(), VarValueLength);
+
+			std::string Value(RawValue.begin(), RawValue.end());
 			TempPair = {Key, Value};
+			std::println("{}: {}", Key, Value);
 
 		}
 
 		PairsList.push_back(TempPair); // PairsList holds all the Pairs, is defined in BinaryReader.h
 
 	}
+
+
 }
 

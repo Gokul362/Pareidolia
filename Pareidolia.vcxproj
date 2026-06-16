@@ -135,7 +135,7 @@
       <PreprocessorDefinitions>
       </PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp23</LanguageStandard>
       <AdditionalIncludeDirectories>C:\Gokul\Coding\Pareidolia\Pareidolia\FileWatcher.h;C:\raylib\raylib\src</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
@@ -157,6 +157,7 @@ $(ProjectDir)raylib.lib;%(AdditionalDependencies)</AdditionalDependencies>
   <ItemGroup>
     <ClInclude Include="BinaryReader.h" />
     <ClInclude Include="FileWatcher.h" />
+    <ClInclude Include="Main.h" />
     <ClInclude Include="Serializer.h" />
   </ItemGroup>
   <ItemGroup>
