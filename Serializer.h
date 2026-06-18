@@ -11,6 +11,8 @@ enum class DataTypes {
 	Int,
 	Float,
 	Bool,
-	String
+	String,
+	Nested,
+	Terminate
 
 };

@@ -34,7 +34,7 @@ int main() {
 		BeginDrawing();
 
 			ClearBackground(BLACK);
-			DrawText("Pareidolia++", x, 20, 40, DARKBLUE);
+			DrawText("Pareidolia++", 300, 20, 40, DARKBLUE); // remember to change 300 to x
 
 		EndDrawing();
 

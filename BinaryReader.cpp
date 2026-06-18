@@ -124,7 +124,7 @@ void ReadBinary() {
 			std::println("{}: {}", Key, Value);
 		}
 
-		else {
+		else if (isString == true) {
 
 			std::vector<char> RawValue(VarValueLength);
 			pxtan.read(RawValue.data(), VarValueLength);
