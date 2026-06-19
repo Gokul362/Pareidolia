@@ -82,49 +82,46 @@ void ReadBinary() {
 		}
 
 
-		char ValueLength[4];
-		pxtan.read(ValueLength, sizeof(ValueLength));
-		auto VarValueLength = 0;
-		std::memcpy(&VarValueLength, ValueLength, 4);
-
 		// NOTE: Replace "Value" with "NewValue" from the "Pair" strcut
 
 		Pairs TempPair; // Struct for the "Key: Value"
 
 		if (isInt == true) {
-			VarValueLength = 4;
 			char CharValue[4];
-			pxtan.read(CharValue, VarValueLength);
+			pxtan.read(CharValue, 4);
 
 			int Value;
-			std::memcpy(&Value, CharValue, VarValueLength);
+			std::memcpy(&Value, CharValue, 4);
 			TempPair = {Key, Value}; 
 			std::println("{}: {}", Key, Value);
 		}
 
 		else if (isFloat == true) {
-			VarValueLength = 4;
 			char CharValue[4];
-			pxtan.read(CharValue, VarValueLength);
+			pxtan.read(CharValue, 4);
 			
 			float Value;
-			std::memcpy(&Value, CharValue, VarValueLength);
+			std::memcpy(&Value, CharValue, 4);
 			TempPair = { Key, Value };
 			std::println("{}: {}", Key, Value);
 		}
 
 		else if (isBool == true) {
-			VarValueLength = 1;
 			char CharValue[1];
-			pxtan.read(CharValue, VarValueLength);
+			pxtan.read(CharValue, 1);
 
 			bool Value;
-			std::memcpy(&Value, CharValue, VarValueLength);
+			std::memcpy(&Value, CharValue, 1);
 			TempPair = {Key, Value};
 			std::println("{}: {}", Key, Value);
 		}
 
 		else if (isString == true) {
+
+			char ValueLength[4];
+			pxtan.read(ValueLength, sizeof(ValueLength));
+			auto VarValueLength = 0;
+			std::memcpy(&VarValueLength, ValueLength, 4);
 
 			std::vector<char> RawValue(VarValueLength);
 			pxtan.read(RawValue.data(), VarValueLength);

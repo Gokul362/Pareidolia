@@ -38,7 +38,7 @@ void WriteValue(std::ofstream& file, auto Pair) {
 
 			std::string StrValue = Value.as<std::string>();
 
-			if (StrValue == "True" || StrValue == "False") {
+			if (StrValue == "true" || StrValue == "false") {
 				DataTypes DataType = DataTypes::Bool;
 				file.write(reinterpret_cast<char*>(&DataType), 1);
 
