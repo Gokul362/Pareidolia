@@ -1,5 +1,4 @@
 #include <iostream>
-#include <fstream>
 #include <string>
 #include <typeinfo>
 #include "FileWatcher.h"
@@ -82,6 +81,20 @@ void WriteValue(std::ofstream& file, auto Pair) {
 		
 
 		case YAML::NodeType::Map: {
+
+			auto ValueNested = Value.begin();
+			auto TotalNested = Value.size();
+			DataTypes DataType = DataTypes::Nested;
+			file.write(reinterpret_cast<char*>(&DataType), 1);
+			file.write(reinterpret_cast<char*>(&TotalNested), 4);
+
+			for (int n = 0; n < Value.size(); n++) {
+
+				WriteKey(file, ValueNested);
+				WriteValue(file, ValueNested);
+				++ValueNested;
+
+			}
 
 			break;
 

@@ -1,9 +1,10 @@
-#include <unordered_map>
 #include "raylib.h"
 #include "Main.h"
 #include "FileWatcher.h"
 #include "Serializer.h"
 #include "BinaryReader.h"
+#include "Variables.h"
+#include "Config.h"
 
 
 // Use these functions to create your variables
@@ -32,20 +33,13 @@ std::string ConvertToString(auto& map, auto key) {
 }
 
 
-
 int main() {
-
-	std::unordered_map<std::string, std::variant<int, float, bool, std::string>> PairsMap;
 
 	// Initial Boot 
 	BinaryConvert();
 	ReadBinary();
+	WriteVariable();
 
-	for (int i = 0; i < PairsList.size(); i++) {
-
-		PairsMap[PairsList[i].NewKey] = PairsList[i].NewValue;
-
-	}
 
 	// Declare your variables here
 	int x = ConvertToInt(PairsMap, "x");
@@ -70,25 +64,22 @@ int main() {
 		if (ChangeDetected() == true) {
 			BinaryConvert();
 			ReadBinary();
-
-			for (int i = 0; i < PairsList.size(); i++) {
-
-				PairsMap[PairsList[i].NewKey] = PairsList[i].NewValue;
-
-			}
-
-			// Re-Assign your variables here
-			x = ConvertToInt(PairsMap, "x");
-			y = ConvertToInt(PairsMap, "y");
-			size = ConvertToInt(PairsMap, "size");
+			WriteVariable();
 
 		}
 
-
+		// Re-Assign your variables here
+		x = ConvertToInt(PairsMap, "x");
+		y = ConvertToInt(PairsMap, "y");
+		size = ConvertToInt(PairsMap, "size");
 
 	}
 
 	CloseWindow();
 
-
 }
+
+
+
+
+

@@ -1,7 +1,6 @@
 #pragma once
+#include <unordered_map>
+#include <variant>
+#include <string>
 
-
-// Variables Again
-// index = PairsMap["X"];
-// Pairs& myInstance = PairsList[index];
-// x = std::get<int>(myInstance.NewValue);
+inline std::unordered_map<std::string, std::variant<int, float, bool, std::string>> PairsMap;
