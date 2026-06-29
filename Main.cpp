@@ -4,33 +4,6 @@
 #include "Serializer.h"
 #include "BinaryReader.h"
 #include "Variables.h"
-#include "Config.h"
-
-
-// Use these functions to create your variables
-int ConvertToInt(auto& map, auto key) {
-
-	return std::get<int>(map[key]);
-
-}
-
-float ConvertToFloat(auto& map, auto key) {
-
-	return std::get<float>(map[key]);
-
-}
-
-bool ConvertToBool(auto& map, auto key) {
-
-	return std::get<bool>(map[key]);
-
-}
-
-std::string ConvertToString(auto& map, auto key) {
-
-	return std::get<std::string>(map[key]);
-
-}
 
 
 int main() {
@@ -43,8 +16,16 @@ int main() {
 
 	// Declare your variables here
 	int x = ConvertToInt(PairsMap, "x");
-	int y = ConvertToInt(PairsMap, "y");
-	int size = ConvertToInt(PairsMap, "size");
+	float y = ConvertToFloat(PairsMap, "y");
+	int speed = ConvertToFloat(PairsMap, "Entities.Player.Kumo.Speed");
+	int gravity = ConvertToInt(PairsMap, "Entities.Player.Kumo.Gravity"); // Maybe make an "isReloadable" boolean
+	int Max_X_L = ConvertToInt(PairsMap, "MAX_X_L");
+	int Max_X_R = ConvertToInt(PairsMap, "MAX_X_R");
+	int GND = ConvertToInt(PairsMap, "GND");
+	int JumpForce = ConvertToInt(PairsMap, "Entities.Player.Kumo.JumpForce");
+
+	float yVelocity = 0.0f;
+	bool isGrounded = false;
 
 	// Window Setup
 	InitWindow(950, 600, "Untitled");
@@ -53,10 +34,47 @@ int main() {
 
 	while (!WindowShouldClose()) {
 
+		float DeltaTime = GetFrameTime();
+
+		if (y > GND) {
+			isGrounded = true;
+			y = GND;
+		}
+		
+		if (!isGrounded) {
+			yVelocity += gravity * DeltaTime;
+
+		}
+		
+		if (IsKeyPressed(KEY_W) && isGrounded) {
+			yVelocity = JumpForce;
+			isGrounded = false;
+		}
+
+
+		y += yVelocity * DeltaTime;
+		//std::cout << y << std::endl;
+
+
+		if (IsKeyDown(KEY_A)) {
+			x -= speed;
+		}
+		else if (IsKeyDown(KEY_D)) {
+			x += speed;
+		}
+
+		if (x <= 0) {
+			x = 0;
+		}
+		else if (x >= 900) {
+			x = 900;
+		}
+
 		BeginDrawing();
 
 			ClearBackground(BLACK);
-			DrawText("Testing", x, y, size, DARKBLUE); // remember to change 300 to x
+			DrawRectangle(x, y, 50, 50, RED); 
+			DrawRectangle(0, 500, 950, 10, DARKBLUE);
 
 		EndDrawing();
 
@@ -66,12 +84,16 @@ int main() {
 			ReadBinary();
 			WriteVariable();
 
-		}
+			// Re-Assign your variables here but leave out the ones that are not supposed to be hot-reloaded
+			x = ConvertToInt(PairsMap, "x");
+			y = ConvertToFloat(PairsMap, "y");
+			speed = ConvertToFloat(PairsMap, "Entities.Player.Kumo.Speed");
+			gravity = ConvertToInt(PairsMap, "Entities.Player.Kumo.Gravity");
+			Max_X_L = ConvertToInt(PairsMap, "MAX_X_L");
+			Max_X_R = ConvertToInt(PairsMap, "MAX_X_R");
+			JumpForce = ConvertToInt(PairsMap, "Entities.Player.Kumo.JumpForce");
 
-		// Re-Assign your variables here
-		x = ConvertToInt(PairsMap, "x");
-		y = ConvertToInt(PairsMap, "y");
-		size = ConvertToInt(PairsMap, "size");
+		}
 
 	}
 

@@ -1,0 +1,16 @@
+Todo:
+
+--Prior--
+
+1. Add the code for the total amount of nodes in the YAML
+2. Add the length byte for the "values" (right after the data type byte)
+
+--Future--
+
+1. 
+
+
+
+--Notes--
+
+1. The 0x03 (booleans) only use "true" and "false", no uppercases

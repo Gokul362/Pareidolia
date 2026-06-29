@@ -13,7 +13,6 @@ enum class DataTypes {
 	Float,
 	Bool,
 	String,
-	Nested,
-	Terminate
+	Nested
 
 };

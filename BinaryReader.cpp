@@ -143,24 +143,31 @@ Pairs ReadStringValue(std::ifstream& file, auto key) {
 }
 
 
-Pairs FilterAndReadValues(DataTypes VarDataType, std::ifstream& file, std::string Key) {
+Pairs FilterAndReadValues(DataTypes VarDataType, std::ifstream& file, std::string Key, std::string Current = "") {
 
 	Pairs TempPair;
 
+	if (Current == "") {
+		Current = Key;
+	}
+	else {
+		Current = Current + "." + Key;
+	}
+
 	if (VarDataType == DataTypes::Int) {
-		TempPair = ReadIntValue(file, Key);
+		TempPair = ReadIntValue(file, Current);
 	}
 
 	else if (VarDataType == DataTypes::Float) {
-		TempPair = ReadFloatValue(file, Key);
+		TempPair = ReadFloatValue(file, Current);
 	}
 
 	else if (VarDataType == DataTypes::Bool) {
-		TempPair = ReadBoolValue(file, Key);
+		TempPair = ReadBoolValue(file, Current);
 	}
 
 	else if (VarDataType == DataTypes::String) {
-		TempPair = ReadStringValue(file, Key);
+		TempPair = ReadStringValue(file, Current);
 	}
 
 	else if (VarDataType == DataTypes::Nested) {
@@ -173,10 +180,12 @@ Pairs FilterAndReadValues(DataTypes VarDataType, std::ifstream& file, std::strin
 
 		for (int n = 0; n < VarNestedLength; n++) {
 
-			std::string Key = ReadKey(file);
+			std::string NestedKey = ReadKey(file);
 			DataTypes VarDataType = ReadDataType(file);
-			Pairs ChildPair = FilterAndReadValues(VarDataType, file, Key);
-			PairsList.push_back(ChildPair); // PairsList holds all the Pairs, is defined in BinaryReader.h
+			Pairs ChildPair = FilterAndReadValues(VarDataType, file, NestedKey, Current);
+			if (VarDataType != DataTypes::Nested) {
+				PairsList.push_back(ChildPair); // PairsList holds all the Pairs, is defined in BinaryReader.h
+			}
 
 		}
 
@@ -200,15 +209,17 @@ void ReadBinary() {
 		DataTypes VarDataType = ReadDataType(pxtan);
 
 
-		Pairs TempPair = FilterAndReadValues(VarDataType, pxtan, Key);
+		Pairs LinearPair = FilterAndReadValues(VarDataType, pxtan, Key);
 		if (VarDataType != DataTypes::Nested) {
-			PairsList.push_back(TempPair); // PairsList holds all the Pairs, is defined in BinaryReader.h
+			PairsList.push_back(LinearPair); // PairsList holds all the Pairs, is defined in BinaryReader.h
 		}
 		
 
 
 	}
 
+
+	std::cout << "Reading done." << std::endl;
 
 }
 
