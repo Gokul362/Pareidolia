@@ -2,71 +2,69 @@
 #include "Players.h"
 #include "raylib.h"
 
-void LoadPlayers() {
+void Player::LoadPlayers(std::string path, MapShortcut& map) {
 
+	x = std::get<int>(map[path + ".x"]);
+	y = std::get<int>(map[path + ".y"]);
+	speed = std::get<float>(map[path + ".Speed"]);
+	gravity = std::get<int>(map[path + ".Gravity"]);
+	JumpForce = std::get<int>(map[path + ".JumpForce"]);
+	left = std::get<int>(map[path + ".Controls.Left"]);
+	right = std::get<int>(map[path + ".Controls.Right"]);
+	up = std::get<int>(map[path + ".Controls.Up"]);
 
-	Kumo.x = ConvertToInt(PairsMap, "x");
-	Kumo.y = ConvertToInt(PairsMap, "y");
-	Kumo.speed = ConvertToFloat(PairsMap, "Entities.Player.Kumo.Speed");
-	Kumo.gravity = ConvertToInt(PairsMap, "Entities.Player.Kumo.Gravity");
-	Kumo.JumpForce = ConvertToInt(PairsMap, "Entities.Player.Kumo.JumpForce");
-	Kumo.yVelocity = 0.0f;
-	Kumo.left = ConvertToInt(PairsMap, "Entities.Player.Kumo.Controls.Left");
-	Kumo.right = ConvertToInt(PairsMap, "Entities.Player.Kumo.Controls.Right");
-	Kumo.up = ConvertToInt(PairsMap, "Entities.Player.Kumo.Controls.Up");
-	Kumo.isGrounded = false;
-
-
-	Fry.x = ConvertToInt(PairsMap, "x");
-	Fry.y = ConvertToInt(PairsMap, "y");
-	Fry.speed = ConvertToFloat(PairsMap, "Entities.Player.Fry.Speed");
-	Fry.gravity = ConvertToInt(PairsMap, "Entities.Player.Fry.Gravity");
-	Fry.JumpForce = ConvertToInt(PairsMap, "Entities.Player.Fry.JumpForce");
-	Fry.left = ConvertToInt(PairsMap, "Entities.Player.Fry.Controls.Left");
-	Fry.right = ConvertToInt(PairsMap, "Entities.Player.Fry.Controls.Right");
-	Fry.up = ConvertToInt(PairsMap, "Entities.Player.Fry.Controls.Up");
-	Fry.isGrounded = false;
-	Fry.yVelocity = 0.0f;
+	yVelocity = 0.0f;
+	isGrounded = false;
 
 }
 
+void Player::Reload(std::string path, MapShortcut& map) {
 
-void MovementAndCollision(Player& Player, int GND) {
+	speed = std::get<float>(map[path + ".Speed"]);
+	gravity = std::get<int>(map[path + ".Gravity"]);
+	JumpForce = std::get<int>(map[path + ".JumpForce"]);
+	left = std::get<int>(map[path + ".Controls.Left"]);
+	right = std::get<int>(map[path + ".Controls.Right"]);
+	up = std::get<int>(map[path + ".Controls.Up"]);
+
+}
+
+void Player::MovementAndCollision(const Config& GameConfig) {
 
 	float DeltaTime = GetFrameTime();
 
-	if (Player.y >= GND) {
-		Player.isGrounded = true;
-		Player.y = GND;
-		Player.yVelocity = 0.0f;
+	if (y >= GameConfig.GND) {
+		isGrounded = true;
+		y = GameConfig.GND;
+		yVelocity = 0.0f;
 	}
 
-	if (!Player.isGrounded) {
-		Player.yVelocity += Player.gravity * DeltaTime;
+	if (!isGrounded) {
+		yVelocity += gravity * DeltaTime;
 
 	}
 
-	if (IsKeyPressed(Player.up) && Player.isGrounded) {
-		Player.yVelocity = Player.JumpForce;
-		Player.isGrounded = false;
+	if (IsKeyPressed(up) && isGrounded) {
+		yVelocity = JumpForce;
+		isGrounded = false;
 	}
 
 
-	Player.y += Player.yVelocity * DeltaTime;
+	y += yVelocity * DeltaTime;
 
 
-	if (IsKeyDown(Player.left)) {
-		Player.x -= Player.speed;
+	if (IsKeyDown(left)) {
+		x -= speed;
 	}
-	else if (IsKeyDown(Player.right)) {
-		Player.x += Player.speed;
+	else if (IsKeyDown(right)) {
+		x += speed;
 	}
 
-	if (Player.x <= 0) {
-		Player.x = 0;
+	if (x <= GameConfig.Max_X_L) {
+		x = GameConfig.Max_X_L;
 	}
-	else if (Player.x >= 900) {
-		Player.x = 900;
+	else if (x >= GameConfig.Max_X_R) {
+		x = GameConfig.Max_X_L;
 	}
 
 

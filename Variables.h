@@ -8,10 +8,6 @@ using MapShortcut = std::unordered_map<std::string, VariantShortcut>;
 
 inline MapShortcut PairsMap;
 
-int ConvertToInt(MapShortcut& map, std::string key);
-float ConvertToFloat(MapShortcut& map, std::string key);
-bool ConvertToBool(MapShortcut& map, std::string key);
-std::string ConvertToString(MapShortcut& map, std::string key);
 
 void WriteVariable();
 

@@ -4,6 +4,7 @@
 #include "Serializer.h"
 #include "BinaryReader.h"
 #include "Variables.h"
+#include "Config.h"
 
 
 // Non framework #includes
@@ -18,14 +19,14 @@ int main() {
 	WriteVariable();
 
 
-	LoadPlayers();
+	Player Kumo;
+	Player Fry;
+	Kumo.LoadPlayers("Entities.Player.Kumo");
+	Fry.LoadPlayers("Entities.Player.Fry");
 
-	// Declare your variables here
-	// 
-	// Maybe make an "isReloadable" boolean
-	int Max_X_L = ConvertToInt(PairsMap, "MAX_X_L");
-	int Max_X_R = ConvertToInt(PairsMap, "MAX_X_R");
-	int GND = ConvertToInt(PairsMap, "GND");
+
+	Config GameConfig;
+	GameConfig.Load();
 
 
 
@@ -39,8 +40,8 @@ int main() {
 	while (!WindowShouldClose()) {
 
 
-		MovementAndCollision(Kumo, GND);
-		MovementAndCollision(Fry, GND);
+		Kumo.MovementAndCollision(GameConfig);
+		Fry.MovementAndCollision(GameConfig);
 
 		//std::cout << GetFrameTime() << std::endl;
 
@@ -61,22 +62,9 @@ int main() {
 
 			// Re-Assign your variables here but leave out the ones that are not supposed to be hot-reloaded
 
-			Kumo.speed = ConvertToFloat(PairsMap, "Entities.Player.Kumo.Speed");
-			Kumo.gravity = ConvertToInt(PairsMap, "Entities.Player.Kumo.Gravity");
-			Kumo.JumpForce = ConvertToInt(PairsMap, "Entities.Player.Kumo.JumpForce");
-			Kumo.left = ConvertToInt(PairsMap, "Entities.Player.Kumo.Controls.Left");
-			Kumo.right = ConvertToInt(PairsMap, "Entities.Player.Kumo.Controls.Right");
-			Kumo.up = ConvertToInt(PairsMap, "Entities.Player.Kumo.Controls.Up");
-			Kumo.yVelocity = 0.0f;
+			Kumo.Reload("Entities.Player.Kumo");
+			Fry.Reload("Entities.Player.Fry");
 
-
-			Fry.speed = ConvertToFloat(PairsMap, "Entities.Player.Fry.Speed");
-			Fry.gravity = ConvertToInt(PairsMap, "Entities.Player.Fry.Gravity");
-			Fry.JumpForce = ConvertToInt(PairsMap, "Entities.Player.Fry.JumpForce");
-			Fry.left = ConvertToInt(PairsMap, "Entities.Player.Fry.Controls.Left");
-			Fry.right = ConvertToInt(PairsMap, "Entities.Player.Fry.Controls.Right");
-			Fry.up = ConvertToInt(PairsMap, "Entities.Player.Fry.Controls.Up");
-			Fry.yVelocity = 0.0f;
 
 		}
 

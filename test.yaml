@@ -18,7 +18,7 @@ Entities:
       y: 450
       Speed: 15.5
       Gravity: 2400
-      JumpForce: -200
+      JumpForce: -800
       Controls:
         Left: 263
         Right: 262

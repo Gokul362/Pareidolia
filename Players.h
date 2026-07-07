@@ -1,5 +1,7 @@
 #pragma once
-#include <iostream>
+#include "Variables.h"
+#include "Config.h"
+
 
 class Player {
 
@@ -17,10 +19,9 @@ class Player {
 
 		bool isGrounded;
 
+
+		void LoadPlayers(std::string path, MapShortcut& map = PairsMap);
+		void Reload(std::string path, MapShortcut& map = PairsMap);
+		void MovementAndCollision(const Config& GameConfig);
+
 };
-
-inline Player Kumo;
-inline Player Fry;
-
-void LoadPlayers();
-void MovementAndCollision(Player& Player, int GND);
