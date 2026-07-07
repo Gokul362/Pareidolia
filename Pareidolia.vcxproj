@@ -150,15 +150,19 @@ $(ProjectDir)raylib.lib;%(AdditionalDependencies)</AdditionalDependencies>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BinaryReader.cpp" />
+    <ClCompile Include="Players.cpp" />
     <ClCompile Include="Serializer.cpp" />
     <ClCompile Include="FileWatcher.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Variables.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BinaryReader.h" />
     <ClInclude Include="FileWatcher.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="Players.h" />
     <ClInclude Include="Serializer.h" />
+    <ClInclude Include="Variables.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="test.yaml" />

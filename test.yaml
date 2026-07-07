@@ -1,12 +1,25 @@
-x: 400
-y: 90.0
-size: 40
 Max_X_L: 0
 Max_X_R: 900
 GND: 450
 Entities:
   Player:
     Kumo:
-      Speed: 18.5
-      Gravity: 3600
-      JumpForce: -2000
+      x: 300
+      y: 450
+      Speed: 12.5
+      Gravity: 3000
+      JumpForce: -1200
+      Controls:
+        Left: 65
+        Right: 68
+        Up: 87
+    Fry:
+      x: 700
+      y: 450
+      Speed: 15.5
+      Gravity: 2400
+      JumpForce: -200
+      Controls:
+        Left: 263
+        Right: 262
+        Up: 265

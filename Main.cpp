@@ -6,6 +6,10 @@
 #include "Variables.h"
 
 
+// Non framework #includes
+#include "Players.h"
+
+
 int main() {
 
 	// Initial Boot 
@@ -14,18 +18,18 @@ int main() {
 	WriteVariable();
 
 
+	LoadPlayers();
+
 	// Declare your variables here
-	int x = ConvertToInt(PairsMap, "x");
-	float y = ConvertToFloat(PairsMap, "y");
-	int speed = ConvertToFloat(PairsMap, "Entities.Player.Kumo.Speed");
-	int gravity = ConvertToInt(PairsMap, "Entities.Player.Kumo.Gravity"); // Maybe make an "isReloadable" boolean
+	// 
+	// Maybe make an "isReloadable" boolean
 	int Max_X_L = ConvertToInt(PairsMap, "MAX_X_L");
 	int Max_X_R = ConvertToInt(PairsMap, "MAX_X_R");
 	int GND = ConvertToInt(PairsMap, "GND");
-	int JumpForce = ConvertToInt(PairsMap, "Entities.Player.Kumo.JumpForce");
 
-	float yVelocity = 0.0f;
-	bool isGrounded = false;
+
+
+
 
 	// Window Setup
 	InitWindow(950, 600, "Untitled");
@@ -34,46 +38,17 @@ int main() {
 
 	while (!WindowShouldClose()) {
 
-		float DeltaTime = GetFrameTime();
 
-		if (y > GND) {
-			isGrounded = true;
-			y = GND;
-		}
-		
-		if (!isGrounded) {
-			yVelocity += gravity * DeltaTime;
+		MovementAndCollision(Kumo, GND);
+		MovementAndCollision(Fry, GND);
 
-		}
-		
-		if (IsKeyPressed(KEY_W) && isGrounded) {
-			yVelocity = JumpForce;
-			isGrounded = false;
-		}
-
-
-		y += yVelocity * DeltaTime;
-		//std::cout << y << std::endl;
-
-
-		if (IsKeyDown(KEY_A)) {
-			x -= speed;
-		}
-		else if (IsKeyDown(KEY_D)) {
-			x += speed;
-		}
-
-		if (x <= 0) {
-			x = 0;
-		}
-		else if (x >= 900) {
-			x = 900;
-		}
+		//std::cout << GetFrameTime() << std::endl;
 
 		BeginDrawing();
 
 			ClearBackground(BLACK);
-			DrawRectangle(x, y, 50, 50, RED); 
+			DrawRectangle(Kumo.x, Kumo.y, 50, 50, RED);
+			DrawRectangle(Fry.x, Fry.y, 50, 50, YELLOW);
 			DrawRectangle(0, 500, 950, 10, DARKBLUE);
 
 		EndDrawing();
@@ -85,13 +60,23 @@ int main() {
 			WriteVariable();
 
 			// Re-Assign your variables here but leave out the ones that are not supposed to be hot-reloaded
-			x = ConvertToInt(PairsMap, "x");
-			y = ConvertToFloat(PairsMap, "y");
-			speed = ConvertToFloat(PairsMap, "Entities.Player.Kumo.Speed");
-			gravity = ConvertToInt(PairsMap, "Entities.Player.Kumo.Gravity");
-			Max_X_L = ConvertToInt(PairsMap, "MAX_X_L");
-			Max_X_R = ConvertToInt(PairsMap, "MAX_X_R");
-			JumpForce = ConvertToInt(PairsMap, "Entities.Player.Kumo.JumpForce");
+
+			Kumo.speed = ConvertToFloat(PairsMap, "Entities.Player.Kumo.Speed");
+			Kumo.gravity = ConvertToInt(PairsMap, "Entities.Player.Kumo.Gravity");
+			Kumo.JumpForce = ConvertToInt(PairsMap, "Entities.Player.Kumo.JumpForce");
+			Kumo.left = ConvertToInt(PairsMap, "Entities.Player.Kumo.Controls.Left");
+			Kumo.right = ConvertToInt(PairsMap, "Entities.Player.Kumo.Controls.Right");
+			Kumo.up = ConvertToInt(PairsMap, "Entities.Player.Kumo.Controls.Up");
+			Kumo.yVelocity = 0.0f;
+
+
+			Fry.speed = ConvertToFloat(PairsMap, "Entities.Player.Fry.Speed");
+			Fry.gravity = ConvertToInt(PairsMap, "Entities.Player.Fry.Gravity");
+			Fry.JumpForce = ConvertToInt(PairsMap, "Entities.Player.Fry.JumpForce");
+			Fry.left = ConvertToInt(PairsMap, "Entities.Player.Fry.Controls.Left");
+			Fry.right = ConvertToInt(PairsMap, "Entities.Player.Fry.Controls.Right");
+			Fry.up = ConvertToInt(PairsMap, "Entities.Player.Fry.Controls.Up");
+			Fry.yVelocity = 0.0f;
 
 		}
 
